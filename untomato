@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source tomatoconfig
+
+if test -f "$TOMATOPATH/$LOGFILE"
+then
+
+    head -n -1 "$TOMATOPATH/$LOGFILE" > "$TOMATOPATH/tmp"
+    cat "$TOMATOPATH/tmp" > "$TOMATOPATH/$LOGFILE"
+    rm "$TOMATOPATH/tmp"
+
+    if test $(cat "$TOMATOPATH/$LOGFILE" | wc -l) -eq 0
+    then
+        echo "no tomatoes left in $LOGFILE. Deleting log."
+        rm "$TOMATOPATH/$LOGFILE"
+    else
+        echo "$LOGFILE"
+        echo "----------"
+        cat "$TOMATOPATH/$LOGFILE"
+        echo
+    fi
+
+else
+    echo "Note: no tomato log found for $LOGFILE in the first place."
+fi

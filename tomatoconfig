@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+
+#########################
+### Configuration options
+#########################
+
+# Where tomato logs will be created
+TOMATOPATH="/home/tasos/Dropbox/gtd2/07. Daily Tomatoes"
+
+# Tomato timer duration (1500 seconds = 25 minutes)
+TOMATO_seconds=1500
+
+# Break timer duration (300 seconds =  5 minutes)
+BREAK_seconds=300
+
+# Log file (default value uses today's date)
+LOGFILE=$(date "+%Y-%m-%d")
+
+# Audiofile used during main tomato timer
+TOMATOAUDIO="/usr/share/gnome-pomodoro/sounds/timer.ogg"
+
+# 'Bell' used at end of tomato interval
+TOMATOBELL="/usr/share/gnome-pomodoro/sounds/bell.ogg"
+
+# Audiofile used during break timer
+BREAKAUDIO="/usr/share/gnome-pomodoro/sounds/clock.ogg"
+
+# 'Bell' used at end of break interval
+BREAKBELL="/usr/share/gnome-pomodoro/sounds/loud-bell.ogg"

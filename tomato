@@ -1,0 +1,74 @@
+#!/bin/bash
+
+source tomatoconfig
+
+clear
+
+
+# ---------------------------------
+# Increment tomato count in logfile
+# ---------------------------------
+
+TOMATOCOUNT=$(cat "$TOMATOPATH/$LOGFILE" 2> /dev/null | wc -l)
+TOMATOCOUNT=$((TOMATOCOUNT + 1))
+
+if test -f "$TOMATOPATH/$LOGFILE" && test "$*" = "continue"
+then
+    MSG="$TOMATOCOUNT. $( tail -n 1 "$TOMATOPATH/$LOGFILE" | cut -d' ' -f 2- )"
+else
+    MSG="$TOMATOCOUNT. $*"
+fi
+
+echo "$MSG" >> "$TOMATOPATH/$LOGFILE"
+
+echo "$LOGFILE"
+echo "----------"
+cat "$TOMATOPATH/$LOGFILE"
+echo
+
+
+# ----------------
+# Tomato countdown
+# ----------------
+
+play "$TOMATOAUDIO" repeat - fade t 0 =${TOMATO_seconds} 60 2> /dev/null &
+EndTime=$(( $(date +%s) + ${TOMATO_seconds} ))
+while test $(date +%s) -le $EndTime
+do
+    TimeLeft=$(( $EndTime - $(date +%s) ))
+    echo -e -n "\033[100DTime left in tomato: $(date -d "@$TimeLeft" "+%M:%S")"
+    sleep 1
+done
+
+wait
+play "$TOMATOBELL" 2> /dev/null
+
+echo
+echo
+
+
+# ---------------
+# Break countdown
+# ---------------
+
+play "$BREAKAUDIO" repeat - fade t 0 =${BREAK_seconds} 60 2> /dev/null &
+EndTime=$(( $(date +%s) + ${BREAK_seconds} ))
+while test $(date +%s) -le $EndTime
+do
+    TimeLeft=$(( $EndTime - $(date +%s) ))
+    echo -e -n "\033[100D\033[91mTime left in break: $(date -d "@$TimeLeft" "+%M:%S")\033[39m"
+    sleep 1
+done
+
+wait
+play "$BREAKBELL" 2> /dev/null
+
+
+
+# ----
+# Done
+# ----
+
+echo
+echo
+echo "Done."
